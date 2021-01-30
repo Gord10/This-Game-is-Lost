@@ -9,7 +9,7 @@ public enum Tile
     FOOD
 }
 
-public class GameManager : MonoBehaviour
+public class SnakeGameManager : MonoBehaviour
 {
     public Tile[,] tiles;
     public int gameWidth = 17, gameLength = 10;

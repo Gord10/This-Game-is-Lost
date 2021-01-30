@@ -20,6 +20,13 @@ public class TitleScreenManager : MonoBehaviour
             return;
         }
 
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            return;
+        }
+#endif
+
         if (Input.anyKeyDown && Time.timeSinceLevelLoad > 0.2f)
         {
             SceneManager.LoadScene("Counter");

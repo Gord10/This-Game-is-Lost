@@ -40,9 +40,11 @@ public class CounterScreenManager : MonoBehaviour
 
         TimeSpan timeSpan = targetDate - DateTime.Now;
 
-        if(timeSpan.TotalMilliseconds < 0)
+        bool debugWin = Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
+
+        if(timeSpan.TotalMilliseconds < 0 || debugWin)
         {
-            text.text = "Success! Thank you for your patience.\n\nPress any key to continue the game.";
+            text.text = "Success! Thank you for your patience.\n\nThis time you did not lose the game. You found the game!\n\nPress any key to continue the game.";
             isSuccess = true;
             return;
         }
@@ -52,6 +54,6 @@ public class CounterScreenManager : MonoBehaviour
         text.text += "\n\nWhich means there are " + (int)timeSpan.TotalDays + " days, " + string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds) + " hours.";
 
         // (int)timeSpan.TotalDays + " days, " + timeSpan.Hours + ":" + timeSpan.Minutes + "." + timeSpan.Seconds + " hours left";
-        text.text += "\n\nThis date is based on your computer's time. Please don't change it.";
+        text.text += "\n\nThis date is based on your computer's time.";
     }
 }
