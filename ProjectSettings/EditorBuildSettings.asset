@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Counter.unity
     guid: 552d499ff0a067d4ba4f8425f869a987
+  - enabled: 1
+    path: Assets/Scenes/Lost Game.unity
+    guid: 5b5cf6df1d80efc46963ecfc498e389a
   m_configObjects: {}

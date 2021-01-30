@@ -23,24 +23,44 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!gm.IsMovementAllowed())
+        {
+            return;
+        }
+
         if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            y++;
+            if(y < gm.wallMaxY -1)
+            {
+                y++;
+            }
+            
             gm.UpdateGame();
         }
         else if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            y--;
+            if(y > gm.wallMinY + 1)
+            {
+                y--;
+            }
+            
             gm.UpdateGame();
         }
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            x--;
+            if(x > gm.wallMinX +1)
+            {
+                x--;
+            }
+            
             gm.UpdateGame();
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
-            x++;
+            if (x < gm.wallMaxX - 1)
+            {
+                x++;
+            }
             gm.UpdateGame();
         }
 
