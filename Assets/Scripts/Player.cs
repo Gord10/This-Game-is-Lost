@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int x = 4, y = 4;
+    public int selfMovementInterval = 3; //At this interval, the protagonist will move to the window without the player's input
     LostGameManager gm;
 
     private void Awake()
@@ -17,7 +18,34 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        InvokeRepeating("GoToTheWindow", 0, selfMovementInterval);
+    }
+
+    void GoToTheWindow()
+    {
+        if(!gm.IsMovementAllowed())
+        {
+            return;
+        }
+
+        if(y < gm.wallMaxY - 1)
+        {
+            y++;
+            gm.UpdateGame();
+        }
+        else
+        {
+            if(x < gm.GetMiddleWallX())
+            {
+                x++;
+                gm.UpdateGame();
+            }
+            else
+            {
+                x--;
+                gm.UpdateGame();
+            }
+        }
     }
 
     // Update is called once per frame
@@ -63,6 +91,5 @@ public class Player : MonoBehaviour
             }
             gm.UpdateGame();
         }
-
     }
 }

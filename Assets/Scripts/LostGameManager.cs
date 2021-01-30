@@ -17,20 +17,40 @@ public class LostGameManager : MonoBehaviour
     public enum State
     {
         NARRATION,
-        INGAME
+        IN_GAME,
+        GAME_OVER
     }
 
     public State state = State.NARRATION;
 
     Player player;
     int narrationCounter = 0;
+    bool isShowingGameOverScreen = false;
+
+    static bool didWeShowNarration = false;
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
 
-        narrationText.text = narrationTexts[0];
+#if !UNITY_EDITOR
+        state = State.NARRATION;
+#endif
 
+        if(didWeShowNarration)
+        {
+            state = State.IN_GAME;
+        }
+
+        if(state == State.NARRATION)
+        {
+            narrationText.text = narrationTexts[0];
+            didWeShowNarration = true;
+        }
+        else
+        {
+            narrationText.text = narrationTexts[narrationTexts.Length - 1];
+        }
     }
 
     // Start is called before the first frame update
@@ -50,7 +70,7 @@ public class LostGameManager : MonoBehaviour
 
                 if(narrationCounter == narrationTexts.Length)
                 {
-                    state = State.INGAME;
+                    state = State.IN_GAME;
                 }
                 else
                 {
@@ -58,18 +78,26 @@ public class LostGameManager : MonoBehaviour
                 }
             }
         }
-        else
+        else if(state == State.IN_GAME)
         {
             if(Input.GetKeyDown(KeyCode.Escape))
             {
                 SceneManager.LoadScene("Congrats");
             }
         }
+        else if(state == State.GAME_OVER)
+        {
+            if(isShowingGameOverScreen && Input.anyKeyDown)
+            {
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                SceneManager.LoadScene(currentSceneName);
+            }
+        }
     }
 
     public bool IsMovementAllowed()
     {
-        return state == State.INGAME;
+        return state == State.IN_GAME;
     }
 
     bool IsPositionWall(int x, int y)
@@ -93,9 +121,42 @@ public class LostGameManager : MonoBehaviour
         return false;
     }
 
+    public int GetMiddleWallX()
+    {
+        return (wallMinX + wallMaxX) / 2;
+    }
+
+    bool IsPositionWindow(int x, int y)
+    {
+        if(y == wallMaxY)
+        {
+            int middleWallX = GetMiddleWallX(); 
+            int differenceBetweenWallMiddleX = Mathf.Abs(middleWallX - x);
+
+            return differenceBetweenWallMiddleX < 2;
+        }
+
+        return false;
+    }
+
+    void ShowGameOverScreen()
+    {
+        gameScreen.text = "<color=red>TRY AGAIN</color>";
+        gameScreen.alignment = TextAnchor.MiddleCenter;
+        narrationText.enabled = false;
+        isShowingGameOverScreen = true;
+    }
+
     public void UpdateGame()
     {
         gameScreen.text = "";
+
+        if(IsPositionWindow(player.x, player.y + 1))
+        {
+            state = State.GAME_OVER;
+            Invoke("ShowGameOverScreen", 0.2f);
+            //return;
+        }
 
         int y, x;
         for(y = gameLength -1; y >= 0; y--)
@@ -106,15 +167,19 @@ public class LostGameManager : MonoBehaviour
                 {
                     gameScreen.text += "<color=cyan>@</color>";
                 }
+                else if(IsPositionWindow(x, y))
+                {
+                    gameScreen.text += "<color=red>0</color>";
+                }
+
                 else if(IsPositionWall(x, y))
                 {
-                    gameScreen.text += "O";
+                    gameScreen.text += "#";
                 }
                 else
                 {
                     gameScreen.text += " ";
                 }
-
             }
 
             gameScreen.text += "\n";

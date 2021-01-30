@@ -464,7 +464,13 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 123456789012345678901234567890123456789012345
+  m_Text: "                                        \n                                       
+    \n                OOOOOOOOOOOOO           \n                O           O          
+    \n                O           O           \n                O   <color=cyan>@</color>      
+    O           \n                O           O           \n                O          
+    O           \n                OOOOOOOOOOOOO           \n                                       
+    \n                                        \n                                       
+    \n"
 --- !u!222 &1059913442
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -616,7 +622,9 @@ MonoBehaviour:
     at.
   - I know where my body is. Between these walls.
   - The problem can be all inside your head.
-  - I need to ESCAPE from this horror. Can you help me?
+  - You need to make me stay away from the window.
+  - I have an uncontrollable urge.
+  - I need to ESCAPE from this horror. But in another way. Can you help me?
   state: 0
 --- !u!4 &1989171319
 Transform:
@@ -677,3 +685,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: 4
   y: 4
+  selfMovementInterval: 2
