@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CounterScreenManager : MonoBehaviour
 {
     public Text text;
     DateTime targetDate;
-    bool isSuccess = false;
+    bool isSuccessful = false;
 
     private void Awake()
     {
         targetDate = new DateTime(2022, 1, 31, 20, 0, 0);
-        InvokeRepeating("UpdateCounterText", 0, 1);
+        InvokeRepeating("UpdateCounter", 0, 1);
     }
 
     // Start is called before the first frame update
@@ -29,31 +30,39 @@ public class CounterScreenManager : MonoBehaviour
         {
             Application.Quit();
         }
+
+        if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        {
+            SetSuccess();
+        }
+
+        if(isSuccessful && Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene("Lost Game");
+        }
     }
 
-    void UpdateCounterText()
+    void SetSuccess()
     {
-        if(isSuccess)
-        {
-            return;
-        }
+        isSuccessful = true;
+        text.text = "Success! Thank you for your patience.\n\nThis time you did not lose the game. You found the game!\n\nPress SPACE to continue the game.";
+        CancelInvoke();
+    }
 
+    void UpdateCounter()
+    {
         TimeSpan timeSpan = targetDate - DateTime.Now;
 
-        bool debugWin = Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
-
-        if(timeSpan.TotalMilliseconds < 0 || debugWin)
+        if(timeSpan.TotalMilliseconds < 0)
         {
-            text.text = "Success! Thank you for your patience.\n\nThis time you did not lose the game. You found the game!\n\nPress any key to continue the game.";
-            isSuccess = true;
+            SetSuccess();
             return;
         }
 
-
-        text.text = "This game will be found at\n" + targetDate.ToLongDateString() + " " + targetDate.ToLongTimeString();
+        text.text = "This game will be found at\n" + targetDate.ToLongDateString() + " " + targetDate.ToLongTimeString() + ".";
         text.text += "\n\nWhich means there are " + (int)timeSpan.TotalDays + " days, " + string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds) + " hours.";
 
         // (int)timeSpan.TotalDays + " days, " + timeSpan.Hours + ":" + timeSpan.Minutes + "." + timeSpan.Seconds + " hours left";
-        text.text += "\n\nThis date is based on your computer's time.";
+        text.text += "\n\nThis time span is based on your computer's time.";
     }
 }

@@ -13,13 +13,12 @@ public class LostGameManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
 
-        UpdateGame();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        UpdateGame();
     }
 
     // Update is called once per frame
