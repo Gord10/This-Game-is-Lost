@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LostGameManager : MonoBehaviour
 {
@@ -55,6 +56,13 @@ public class LostGameManager : MonoBehaviour
                 {
                     narrationText.text = narrationTexts[narrationCounter];
                 }
+            }
+        }
+        else
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                SceneManager.LoadScene("Congrats");
             }
         }
     }
