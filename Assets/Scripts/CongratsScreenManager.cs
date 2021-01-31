@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class CongratsScreenManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
+#if UNITY_STANDALONE
     // Update is called once per frame
     void Update()
     {
+
+
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
     }
+#endif
 }

@@ -51,7 +51,7 @@ public class CounterScreenManager : MonoBehaviour
 
     void UpdateCounter()
     {
-        TimeSpan timeSpan = targetDate - DateTime.Now;
+        TimeSpan timeSpan = targetDate - DateTime.Now.ToLocalTime();
 
         if(timeSpan.TotalMilliseconds < 0)
         {
@@ -59,10 +59,20 @@ public class CounterScreenManager : MonoBehaviour
             return;
         }
 
-        text.text = "This game will be found at\n" + targetDate.ToLongDateString() + " " + targetDate.ToLongTimeString() + ".";
+        text.text = "Current time is: " + DateTime.Now.ToLocalTime().ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + ".";
+
+        text.text += "\n\nThis game will be found at\n" + targetDate.ToLongDateString() + " " + targetDate.ToLongTimeString() + ".";
         text.text += "\n\nWhich means there are " + (int)timeSpan.TotalDays + " days, " + string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds) + " hours.";
 
-        // (int)timeSpan.TotalDays + " days, " + timeSpan.Hours + ":" + timeSpan.Minutes + "." + timeSpan.Seconds + " hours left";
-        text.text += "\n\nThis time span is based on your computer's time.";
+        if(Time.timeSinceLevelLoad > 60)
+        {
+            text.text += "\n\n<color=green>Hint: You can change your computer's date and time. Or press Left Shift + W for cheating.</color>";
+        }
+        else
+        {
+            text.text += "\n\nThis time span is based on your computer's time.";
+        }
+
+        
     }
 }

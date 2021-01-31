@@ -28,6 +28,8 @@ public class LostGameManager : MonoBehaviour
     bool isShowingGameOverScreen = false;
 
     static bool didWeShowNarration = false;
+    float timeWhenGameWasOver = 0;
+
 
     private void Awake()
     {
@@ -87,7 +89,7 @@ public class LostGameManager : MonoBehaviour
         }
         else if(state == State.GAME_OVER)
         {
-            if(isShowingGameOverScreen && Input.anyKeyDown)
+            if(isShowingGameOverScreen && Input.anyKeyDown && Time.timeSinceLevelLoad - timeWhenGameWasOver > 0.2f)
             {
                 string currentSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(currentSceneName);
@@ -145,6 +147,7 @@ public class LostGameManager : MonoBehaviour
         gameScreen.alignment = TextAnchor.MiddleCenter;
         narrationText.enabled = false;
         isShowingGameOverScreen = true;
+        timeWhenGameWasOver = Time.timeSinceLevelLoad;
     }
 
     public void UpdateGame()
